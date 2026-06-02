@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="ParaPlus.Business/ParaPlus.Business.csproj" />
+  <Project Path="ParaPlus.Console/ParaPlus.Console.csproj" />
+  <Project Path="ParaPlus.Windows/ParaPlus.Windows.csproj" Id="eb7bf896-069a-43e5-9470-57de754ff817" />
+</Solution>

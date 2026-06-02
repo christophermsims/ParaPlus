@@ -1,0 +1,103 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ParaPlus.Avalonia.ViewModels"
+        mc:Ignorable="d" Width="950" Height="700"
+        x:Class="ParaPlus.Avalonia.Views.QuarterlyOnePagersWindow"
+        x:DataType="vm:QuarterlyOnePagersViewModel"
+        Title="Generate Quarterly One Pager Presentation">
+  <TabControl>
+    <TabItem Header="Settings">
+      <ScrollViewer>
+        <StackPanel Margin="10" Spacing="15" IsEnabled="{Binding !IsProcessing}">
+          <!-- Presentation Template -->
+          <StackPanel Spacing="5">
+            <Label>Presentation Template</Label>
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox Grid.Column="0" Text="{Binding TemplateFileName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+              <Button Grid.Column="1" Content="Select" Click="SelectTemplateFile_Click" Margin="5,0,0,0" />
+            </Grid>
+          </StackPanel>
+
+          <!-- Fiscal Quarters -->
+          <Grid ColumnDefinitions="*,*" ColumnSpacing="15">
+            <GroupBox Grid.Column="0" Header="Starting Fiscal Quarter">
+              <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                <Label Grid.Row="0" Grid.Column="0">Fiscal Year</Label>
+                <Label Grid.Row="0" Grid.Column="1">Fiscal Quarter</Label>
+                <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding FiscalYears}" SelectedItem="{Binding StartFiscalYear}" />
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding FiscalQuarters}" SelectedItem="{Binding StartFiscalQuarter}" />
+              </Grid>
+            </GroupBox>
+            <GroupBox Grid.Column="1" Header="Ending Fiscal Quarter">
+              <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="10" RowSpacing="10">
+                <Label Grid.Row="0" Grid.Column="0">Fiscal Year</Label>
+                <Label Grid.Row="0" Grid.Column="1">Fiscal Quarter</Label>
+                <ComboBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding FiscalYears}" SelectedItem="{Binding EndFiscalYear}" />
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding FiscalQuarters}" SelectedItem="{Binding EndFiscalQuarter}" />
+              </Grid>
+            </GroupBox>
+          </Grid>
+
+          <!-- Cumulative Chart -->
+          <GroupBox Header="Cumulative Chart">
+            <StackPanel Spacing="10" Margin="10">
+              <StackPanel Spacing="5">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <Label>Quarterly Patent Filings Report</Label>
+                  <Button Classes="Link" Content="!Original Patent Filings" Command="{Binding OpenLinkCommand}" CommandParameter="{Binding PatentFilingsLink}" />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBox Grid.Column="0" Text="{Binding QuarterlyPatentFilings, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                  <Button Grid.Column="1" Content="Select" Click="SelectQuarterlyPatentFilings_Click" Margin="5,0,0,0" />
+                </Grid>
+              </StackPanel>
+              <StackPanel Spacing="5">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                  <Label>Quarterly Patent Issuances Report</Label>
+                  <Button Classes="Link" Content="!Original Issued Patents" Command="{Binding OpenLinkCommand}" CommandParameter="{Binding IssuedPatentsLink}" />
+                </StackPanel>
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBox Grid.Column="0" Text="{Binding QuarterlyPatentsIssued, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+                  <Button Grid.Column="1" Content="Select" Click="SelectQuarterlyPatentsIssued_Click" Margin="5,0,0,0" />
+                </Grid>
+              </StackPanel>
+            </StackPanel>
+          </GroupBox>
+
+          <!-- Filings Report -->
+          <StackPanel Spacing="5">
+            <StackPanel Orientation="Horizontal" Spacing="10">
+              <Label>Filings Report (CSV File)</Label>
+              <Button Classes="Link" Content="Quarterly Patent Filings - One Pagers" Command="{Binding OpenLinkCommand}" CommandParameter="{Binding QuarterlyOnePagersLink}" />
+            </StackPanel>
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox Grid.Column="0" Text="{Binding QuarterlyOnePagersFile, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+              <Button Grid.Column="1" Content="Select" Click="SelectQuarterlyOnePagersFile_Click" Margin="5,0,0,0" />
+            </Grid>
+          </StackPanel>
+
+          <!-- Output Folder -->
+          <StackPanel Spacing="5">
+            <Label>Output Folder</Label>
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBox Grid.Column="0" Text="{Binding OutputDirectory, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
+              <Button Grid.Column="1" Content="Select" Click="SelectOutputDirectory_Click" Margin="5,0,0,0" />
+            </Grid>
+          </StackPanel>
+
+          <!-- Generate Button -->
+          <Button Content="Generate Presentation" Command="{Binding GeneratePresentationCommand}" HorizontalAlignment="Right" Margin="0,10,0,0" />
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+    <TabItem Header="Logs">
+      <DockPanel>
+        <ProgressBar DockPanel.Dock="Bottom" IsIndeterminate="{Binding IsProcessing}" Margin="0,5,0,0" />
+        <TextBox Text="{Binding Logs}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" />
+      </DockPanel>
+    </TabItem>
+  </TabControl>
+</Window>

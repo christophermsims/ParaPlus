@@ -1,0 +1,64 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:ParaPlus.Avalonia.ViewModels"
+        mc:Ignorable="d" Width="800" Height="600"
+        x:Class="ParaPlus.Avalonia.Views.InventorAwardsWindow"
+        x:DataType="vm:InventorAwardsViewModel"
+        Title="Inventor Awards">
+  <DockPanel Margin="10">
+    <TabControl DockPanel.Dock="Top">
+      <TabItem Header="Inventor Awards">
+        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*" ColumnDefinitions="Auto,*,Auto" Margin="10"
+              IsEnabled="{Binding !IsProcessing}">
+          <!-- QuarterlyIssuedAwardsFile -->
+          <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Quarterly Issued Awards File:</Label>
+          <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding QuarterlyIssuedAwardsFile, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="0" Grid.Column="2" Content="..." Click="SelectQuarterlyIssuedAwardsFile_Click" />
+
+          <!-- MasterFile -->
+          <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Master File:</Label>
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding MasterFile, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="1" Grid.Column="2" Content="..." Click="SelectMasterFile_Click" />
+
+          <!-- InventorAddressFile -->
+          <Label Grid.Row="2" Grid.Column="0" VerticalAlignment="Center">Inventor Address File:</Label>
+          <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding InventorAddressFile, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="2" Grid.Column="2" Content="..." Click="SelectInventorAddressFile_Click" />
+
+          <!-- OutputFolder -->
+          <Label Grid.Row="3" Grid.Column="0" VerticalAlignment="Center">Output Folder:</Label>
+          <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding OutputFolder, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="3" Grid.Column="2" Content="..." Click="SelectOutputFolder_Click" />
+
+          <!-- Process Button -->
+          <Button Grid.Row="4" Grid.Column="1" Content="Process Awards" Command="{Binding ProcessAwardsCommand}"
+                  HorizontalAlignment="Center" Margin="10" />
+        </Grid>
+      </TabItem>
+      <TabItem Header="Chinese Inventor Awards">
+        <Grid RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="Auto,*,Auto" Margin="10"
+              IsEnabled="{Binding !IsProcessing}">
+          <!-- ChineseInventorFile -->
+          <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Chinese Inventor File:</Label>
+          <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding ChineseInventorFile, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="0" Grid.Column="2" Content="..." Click="SelectChineseInventorFile_Click" />
+
+          <!-- ChineseOutputFolder -->
+          <Label Grid.Row="1" Grid.Column="0" VerticalAlignment="Center">Chinese Output Folder:</Label>
+          <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding ChineseOutputFolder, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
+          <Button Grid.Row="1" Grid.Column="2" Content="..." Click="SelectChineseOutputFolder_Click" />
+
+          <!-- Process Button -->
+          <Button Grid.Row="2" Grid.Column="1" Content="Process Chinese Awards" Command="{Binding ProcessChineseAwardsCommand}"
+                  HorizontalAlignment="Center" Margin="10" />
+        </Grid>
+      </TabItem>
+    </TabControl>
+
+    <ProgressBar IsIndeterminate="{Binding IsProcessing}" DockPanel.Dock="Bottom" Margin="0,5,0,0" />
+    <TextBox Text="{Binding Logs}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
+             ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="0,10,0,0" />
+  </DockPanel>
+</Window>
