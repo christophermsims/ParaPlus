@@ -10,8 +10,13 @@
   <DockPanel Margin="10">
     <TabControl DockPanel.Dock="Top">
       <TabItem Header="Inventor Awards">
-        <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*" ColumnDefinitions="Auto,*,Auto" Margin="10"
-              IsEnabled="{Binding !IsProcessing}">
+        <StackPanel IsEnabled="{Binding !IsProcessing}">
+          <StackPanel Orientation="Horizontal" Spacing="15" Margin="10,10,10,0">
+            <Button Classes="Link" Content="Quarterly Issued Awards Report" Click="OpenQuarterlyIssuedAwardsLink_Click" />
+            <Button Classes="Link" Content="Master Awards File" Click="OpenMasterAwardsLink_Click" />
+          </StackPanel>
+
+          <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,*" ColumnDefinitions="Auto,*,Auto" Margin="10">
           <!-- QuarterlyIssuedAwardsFile -->
           <Label Grid.Row="0" Grid.Column="0" VerticalAlignment="Center">Quarterly Issued Awards File:</Label>
           <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding QuarterlyIssuedAwardsFile, UpdateSourceTrigger=PropertyChanged}" Margin="5" />
@@ -35,7 +40,8 @@
           <!-- Process Button -->
           <Button Grid.Row="4" Grid.Column="1" Content="Process Awards" Command="{Binding ProcessAwardsCommand}"
                   HorizontalAlignment="Center" Margin="10" />
-        </Grid>
+          </Grid>
+        </StackPanel>
       </TabItem>
       <TabItem Header="Chinese Inventor Awards">
         <Grid RowDefinitions="Auto,Auto,Auto,*" ColumnDefinitions="Auto,*,Auto" Margin="10"

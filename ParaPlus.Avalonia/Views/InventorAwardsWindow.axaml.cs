@@ -3,6 +3,8 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using ParaPlus.Avalonia.ViewModels;
 using System.Linq;
+using System.Diagnostics;
+using ParaPlus.Business.Helper;
 using System.Threading.Tasks;
 
 namespace ParaPlus.Avalonia.Views
@@ -101,6 +103,26 @@ namespace ParaPlus.Avalonia.Views
                 var path = await PickFolder();
                 if (path is not null) ViewModel.ChineseOutputFolder = path;
             }
+        }
+
+        private void OpenQuarterlyIssuedAwardsLink_Click(object sender, RoutedEventArgs e)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = LinkConstants.QuarterlyIssuedInvetorAwardsDue,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
+        }
+
+        private void OpenMasterAwardsLink_Click(object sender, RoutedEventArgs e)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = LinkConstants.MasterAwardsFile,
+                UseShellExecute = true
+            };
+            Process.Start(psi);
         }
     }
 }
