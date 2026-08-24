@@ -1,0 +1,50 @@
+{
+    "GeneralSettings": {
+        "NetProjectPath": "ParaPlus.Avalonia.csproj",
+        "ApplicationName": "ParaPlus.Avalonia",
+        "Version": "1.0.0",
+        "PackageName": {
+            "$type": "msbuild",
+            "property": "ParaPlus"
+        },
+        "AssemblyName": {
+            "$type": "msbuild",
+            "property": "AssemblyName"
+        }
+    },
+    "LinuxSettings": {
+        "CreateBinSymlink": "True"
+    },
+    "Win32Settings": {
+        "InstallerIcon": "paraplus-icon.png",
+        "IncludeUninstaller": "True"
+    },
+    "MacOsSettings": {
+        "CreateBundle": true,
+        "BundleIdentifier": "com.cms.paraplus-avalonia",
+        "TeamId": "43NXR2Z682",
+        "BundleCategory": "Business",
+        "Permissions": {
+            "Documents": "This application needs access to your Documents folder to save and open files.",
+            "Downloads": "This application needs access to your Downloads folder to save and open files."
+        },
+        "AppIcon": "paraplus-icon.png",
+        "DmgBackground": "paraplus-dmg.tif",
+        "SigningCredentialsType": "P12Certificate",
+        "SigningP12Certificate": "../Certificate/parcel_ready_cert.p12",
+        "SigningP12Password": {
+            "$type": "env",
+            "name": "PARCEL_SIGNING_P12_PASSWORD"
+        },
+        "NotaryCredentialsType": "AppleAccount",
+        "NotaryAppleId": "sesmar@gmail.com",
+        "NotaryAppPassword": {
+            "$type": "env",
+            "name": "PARCEL_NOTARY_PASSWORD"
+        }
+    },
+    "PublishSettings": {
+        "PublishSingleFile": "True",
+        "ExtraBuildProperties": {}
+    }
+}
