@@ -2,7 +2,7 @@
     "GeneralSettings": {
         "NetProjectPath": "ParaPlus.Avalonia.csproj",
         "ApplicationName": "ParaPlus.Avalonia",
-        "Version": "1.0.0",
+        "Version": "1.0.1",
         "PackageName": {
             "$type": "msbuild",
             "property": "ParaPlus"
