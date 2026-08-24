@@ -120,7 +120,10 @@ namespace ParaPlus.Business.Jobs
             _quarterlyInventors = ParseQuarterlyIssuedList();
 			_inventorAddresses = ParseInventorAddressList();
 
-            ProcessInventorIssuedAwardReports(_masterInventors, _quarterlyInventors);
+			_reporter($"Total Master Inventors: {_masterInventors.Count()}");
+            _masterInventors = ProcessInventorIssuedAwardReports(_masterInventors, _quarterlyInventors);
+			_reporter($"Total Master Inventors: {_masterInventors.Count()}");
+
             WriteQuarterlyOutputFile(_quarterlyInventors);
 			WriteChineseInventorOutputFile(_quarterlyInventors);
 			WriteMasterOutputFile(_masterInventors);
@@ -153,7 +156,7 @@ namespace ParaPlus.Business.Jobs
 			return inventorAddresses;
 		}
 
-        private void ProcessInventorIssuedAwardReports(IEnumerable<MasterInventor> masterInventors, IEnumerable<QuarterlyInventor> quarterlyInventors)
+        private IEnumerable<MasterInventor> ProcessInventorIssuedAwardReports(IEnumerable<MasterInventor> masterInventors, IEnumerable<QuarterlyInventor> quarterlyInventors)
         {
             _reporter("Processing inventor issued awards reports...");
 
@@ -167,13 +170,13 @@ namespace ParaPlus.Business.Jobs
                     {
                         masterInventor.NewCubes.Add(cube.Key, cube.Value);
                     }
-
-                    masterInventor.NewCubes = quarterlyInventor.Cubes;
                     
                     quarterlyInventor.NewPlaqueCount = masterInventor.NewPlaqueCount;
                 }
                 else
                 {
+					_reporter($"Inventor Not Found {quarterlyInventor.Name}, Employee ID: {quarterlyInventor.EmployeeId}");
+
                     masterInventor = new MasterInventor(new Dictionary<string, string>() { 
 						{ "Inventors", quarterlyInventor.Name }, 
 						{ "Employee ID", quarterlyInventor.EmployeeId } });
@@ -185,11 +188,14 @@ namespace ParaPlus.Business.Jobs
 
                     quarterlyInventor.NewPlaqueCount = masterInventor.NewPlaqueCount;
                     
+					_reporter($"Adding new Master Inventor: {masterInventor.Name}, Employee ID: {masterInventor.EmployeeID}");
                     masterInventors = masterInventors.Append(masterInventor);
+					_reporter($"Total Master Inventors: {masterInventors.Count()}");
                 }
             }
 
             _reporter("Inventor issued awards reports processing complete.");
+			return masterInventors;
 		}
 
         private void WriteQuarterlyOutputFile(IEnumerable<QuarterlyInventor> quarterlyInventors)
