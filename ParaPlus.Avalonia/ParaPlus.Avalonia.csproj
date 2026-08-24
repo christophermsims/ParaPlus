@@ -10,9 +10,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
     <AvaloniaResource Include="Assets\**" />
-    <None Update="Templates\**">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <AvaloniaResource Include="Templates\**" />
   </ItemGroup>
 
   <ItemGroup>

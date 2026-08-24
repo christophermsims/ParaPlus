@@ -1,6 +1,7 @@
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Avalonia.Platform;
 using ParaPlus.Business.FileProcessing;
 using ParaPlus.Business.Helper;
 using ParaPlus.Business.Jobs;
@@ -17,10 +18,6 @@ namespace ParaPlus.Avalonia.ViewModels
 {
     public partial class QuarterlyOnePagersViewModel : ObservableObject
     {
-        [ObservableProperty]
-        [NotifyCanExecuteChangedFor(nameof(GeneratePresentationCommand))]
-        private string? templateFileName;
-
         [ObservableProperty]
         [NotifyCanExecuteChangedFor(nameof(GeneratePresentationCommand))]
         private string? quarterlyPatentFilings;
@@ -68,8 +65,6 @@ namespace ParaPlus.Avalonia.ViewModels
             FiscalYears = new ObservableCollection<string>(Enumerable.Range(2021, 10).Select(y => y.ToString()));
             FiscalQuarters = new ObservableCollection<string> { "Q1", "Q2", "Q3", "Q4" };
 
-            TemplateFileName = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "QuarterlyPatentApplications_Template.pptx");
-
             StartFiscalQuarter = "Q1";
             StartFiscalYear = "2022";
             EndFiscalQuarter = FiscalYear.LastFiscalQuarter;
@@ -89,7 +84,6 @@ namespace ParaPlus.Avalonia.ViewModels
             if (IsProcessing) return false;
 
             // File and directory checks
-            if (string.IsNullOrWhiteSpace(TemplateFileName) || !File.Exists(TemplateFileName)) return false;
             if (string.IsNullOrWhiteSpace(QuarterlyPatentFilings) || !File.Exists(QuarterlyPatentFilings)) return false;
             if (string.IsNullOrWhiteSpace(QuarterlyPatentsIssued) || !File.Exists(QuarterlyPatentsIssued)) return false;
             if (string.IsNullOrWhiteSpace(QuarterlyOnePagersFile) || !File.Exists(QuarterlyOnePagersFile)) return false;
@@ -111,9 +105,21 @@ namespace ParaPlus.Avalonia.ViewModels
             Logs = string.Empty;
             Log("Starting presentation generation...");
 
+            string tempTemplatePath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}_QuarterlyPatentApplications_Template.pptx");
+
             try
             {
-                await Task.Run(() =>
+                // Extract the embedded resource to a temporary file
+                Log("Loading template from application resources...");
+                await using (var assetStream = AssetLoader.Open(new Uri("avares://ParaPlus.Avalonia/Templates/QuarterlyPatentApplications_Template.pptx")))
+                await using (var fileStream = File.Create(tempTemplatePath))
+                {
+                    await assetStream.CopyToAsync(fileStream);
+                }
+                Log("Template loaded.");
+
+
+                await Task.Run(() => // Offload business logic to a background thread
                 {
                     IFileVerifier onePagerFileVerifier = new OnePagerFileVerifier();
                     IFileProcessor<OnePagerDetails> onePagerFileProcessor = new OnePagerFileProcessor(onePagerFileVerifier);
@@ -129,7 +135,7 @@ namespace ParaPlus.Avalonia.ViewModels
                     string startingQuarter = $"{StartFiscalYear} {StartFiscalQuarter}";
                     string endingQuarter = $"{EndFiscalYear} {EndFiscalQuarter}";
 
-                    presentationBuilder.TemplateFilePath = TemplateFileName;
+                    presentationBuilder.TemplateFilePath = tempTemplatePath;
                     presentationBuilder.QuarterlyOnePagersFilePath = QuarterlyOnePagersFile;
                     presentationBuilder.OutputFolder = OutputDirectory;
 
@@ -144,6 +150,12 @@ namespace ParaPlus.Avalonia.ViewModels
             finally
             {
                 IsProcessing = false;
+                // Clean up the temporary file
+                if (File.Exists(tempTemplatePath))
+                {
+                    File.Delete(tempTemplatePath);
+                    Log("Temporary template file cleaned up.");
+                }
             }
         }
 

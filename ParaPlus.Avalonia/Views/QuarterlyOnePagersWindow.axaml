@@ -3,7 +3,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="using:ParaPlus.Avalonia.ViewModels"
-        mc:Ignorable="d" Width="950" Height="700"
+        mc:Ignorable="d" Width="950" Height="615"
         x:Class="ParaPlus.Avalonia.Views.QuarterlyOnePagersWindow"
         x:DataType="vm:QuarterlyOnePagersViewModel"
         Title="Generate Quarterly One Pager Presentation">
@@ -11,14 +11,6 @@
     <TabItem Header="Settings">
       <ScrollViewer>
         <StackPanel Margin="10" Spacing="15" IsEnabled="{Binding !IsProcessing}">
-          <!-- Presentation Template -->
-          <StackPanel Spacing="5">
-            <Label>Presentation Template</Label>
-            <Grid ColumnDefinitions="*,Auto">
-              <TextBox Grid.Column="0" Text="{Binding TemplateFileName, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="True" />
-              <Button Grid.Column="1" Content="Select" Click="SelectTemplateFile_Click" Margin="5,0,0,0" />
-            </Grid>
-          </StackPanel>
 
           <!-- Fiscal Quarters -->
           <Grid ColumnDefinitions="*,*" ColumnSpacing="15">

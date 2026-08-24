@@ -48,16 +48,6 @@ namespace ParaPlus.Avalonia.Views
         }
 
         private static readonly FilePickerFileType CsvFileType = new("CSV Files") { Patterns = new[] { "*.csv" } };
-        private static readonly FilePickerFileType PptxFileType = new("PowerPoint Presentations") { Patterns = new[] { "*.pptx" } };
-
-        private async void SelectTemplateFile_Click(object sender, RoutedEventArgs e)
-        {
-            if (ViewModel is not null)
-            {
-                var path = await PickFile(new[] { PptxFileType });
-                if (path is not null) ViewModel.TemplateFileName = path;
-            }
-        }
 
         private async void SelectQuarterlyPatentFilings_Click(object sender, RoutedEventArgs e)
         {
